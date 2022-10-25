@@ -9,5 +9,6 @@ export default {
 </script>
 <style lang="scss">
 @import "./assets/scss/hope-ui.scss";
+
 @import "./assets/scss/custom.scss";
 </style>

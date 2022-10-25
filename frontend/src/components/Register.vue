@@ -131,11 +131,11 @@ export default {
     },
     validations() {
         return {
-            fname: { required: helpers.withMessage("First Name is required", required) }, // Matches this.firstName            
-            lname: { required: helpers.withMessage("Last Name is required", required) }, // Matches this.firstName            
-            email: { required: helpers.withMessage("Email is required", required), email: helpers.withMessage("Please enter a valid email address", email) }, // Matches this.firstName            
-            password: { required: helpers.withMessage("Password is required", required) }, // Matches this.firstName            
-            confirm_password: { required: helpers.withMessage("Confirm Password is required", required) }, // Matches this.firstName            
+            fname: { required: helpers.withMessage("First Name is required", required) }, // Matches this.firstName
+            lname: { required: helpers.withMessage("Last Name is required", required) }, // Matches this.firstName
+            email: { required: helpers.withMessage("Email is required", required), email: helpers.withMessage("Please enter a valid email address", email) }, // Matches this.firstName
+            password: { required: helpers.withMessage("Password is required", required) }, // Matches this.firstName
+            confirm_password: { required: helpers.withMessage("Confirm Password is required", required) }, // Matches this.firstName
         }
     },
     methods: {
@@ -143,8 +143,8 @@ export default {
 
             // return false;
             var formData = {
-                fname: this.fname,
-                lname: this.lname,
+              first_name: this.fname,
+              last_name: this.lname,
                 email: this.email,
                 password: this.password,
                 password_confirmation: this.confirm_password,

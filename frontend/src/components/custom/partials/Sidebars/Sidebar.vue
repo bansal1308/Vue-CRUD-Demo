@@ -1,5 +1,5 @@
 <template>
-    <aside :class="`sidebar sidebar-default ${ minisidebar? 'sidebar-mini':''} ${stateSidebarColor} ${stateSidebarActiveStyle} ${stateminiclass} ${statehoverclass} ${stateboxedclass}`">
+    <aside :class="`sidebar sidebar-default ${ minisidebar? 'sidebar-mini':''} ${stateSidebarActiveStyle} ${stateminiclass}`">
         <div class="sidebar-header d-flex align-items-center justify-content-start">
             <router-link :to="{ name: 'default.dashboard'}" class="navbar-brand">
                 <logo />
@@ -24,8 +24,8 @@
 </template>
 <script>
 import Scrollbar from 'smooth-scrollbar'
-import verticalnav from '@/components/custom/partials/Sidebars/Verticalnav'
-import logo from '@/components/custom/Logo/logo'
+import verticalnav from '@/components/custom/partials/Sidebars/Verticalnav.vue'
+import logo from '@/components/custom/Logo/logo.vue'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Sidebar',
@@ -38,62 +38,28 @@ export default {
   },
   computed: {
     ...mapGetters({
-      stateSidebarColor: 'sidebarcolor',
+    //   stateSidebarColor: 'sidebarcolor',
       stateSidebarActiveStyle: 'sidebaractivestyle',
       stateminiclass: 'sidebartypemini',
-      statehoverclass: 'sidebartypehover',
-      stateboxedclass: 'sidebartypeboxed'
+    //   statehoverclass: 'sidebartypehover',
+    //   stateboxedclass: 'sidebartypeboxed'
     })
   },
-  mounted () {
-    this.SmoothScrollbar()
-    this.onsidebarcolor()
-    this.onsidebaractivestyle()
-    this.onminiclass()
-    this.onhoverclass()
-    this.onboxedclass()
-  },
   watch: {
-    stateSidebarColor () {
-      this.onsidebarcolor()
+    stateminiclass () {
+      this.onminiclass()
     },
     stateSidebarActiveStyle () {
       this.onsidebaractivestyle()
     },
-    stateminiclass () {
-      this.onminiclass()
-    },
-    statehoverclass () {
-      this.onhoverclass()
-    },
-    stateboxedclass () {
-      this.onboxedclass()
-    }
   },
   methods: {
     ...mapActions({
-      sidebarcolorChange: 'sidebarcolorsAction',
       sidebarminitypeChange: 'sidebarminitypeAction',
-      sidebarhovertypeChange: 'sidebarhovertypeAction',
-      sidebarboxedtypeChange: 'sidebarboxedtypeAction',
       sidebaractivestyleChange: 'sidebaractivestyleAction'
     }),
-    SmoothScrollbar () {
-      const elementExistMain = document.querySelector('.data-scrollbar')
-      if (elementExistMain) {
-        Scrollbar.init(document.querySelector('.data-scrollbar'), {
-          continuousScrolling: false
-        })
-      }
-    },
     SidebarMini () {
       this.$emit('makeminisidebar', !this.minisidebar)
-    },
-    onsidebarcolor () {
-      const SidebarColor = sessionStorage.getItem('sidebar-color')
-      if (SidebarColor !== null) { this.sidebarcolorChange(SidebarColor) } else {
-        this.sidebarcolorChange(this.stateSidebarColor)
-      }
     },
     onsidebaractivestyle () {
       const SidebarActiveStyle = sessionStorage.getItem('sidebaractivestyle')
@@ -109,23 +75,7 @@ export default {
         this.sidebarminitypeChange(this.stateminiclass)
       }
     },
-    onhoverclass () {
-      const hoverclass = sessionStorage.getItem('type-hover')
-      if (hoverclass !== null) {
-        this.sidebarhovertypeChange(hoverclass)
-      } else {
-        this.sidebarhovertypeChange(this.statehoverclass)
-      }
-    },
-    onboxedclass () {
-      const boxedclass = sessionStorage.getItem('type-boxed')
-      if (boxedclass !== null) {
-        this.sidebarboxedtypeChange(boxedclass)
-      } else {
-        this.sidebarboxedtypeChange(this.stateboxedclass)
-      }
-    }
-
   }
+
 }
 </script>

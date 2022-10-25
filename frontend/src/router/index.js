@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Signin from '../components/Signin.vue'
 import Register from '../components/Register.vue'
+import Default from '../layouts/default.vue'
 
 const defaultchildRoutes = (prop, mode = false) => [
     {
@@ -193,8 +194,9 @@ const routes = [
     },
     {
         path: '/default',
-        name: 'default',
-        component: () => import('../layouts/default.vue'),
+        name: 'Default',
+        //component: () => import('../layouts/default.vue'),
+        component: Default,
         children: defaultchildRoutes('default')
     }
 ]
@@ -203,5 +205,5 @@ const router = createRouter({
     history: createWebHistory(),
     routes: routes
   })
-  
+
   export default router

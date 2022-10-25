@@ -91,8 +91,8 @@ export default {
    },
    validations() {
       return {
-         email: { required: helpers.withMessage("Email is required", required), email: helpers.withMessage("Please enter a valid email address", email) }, // Matches this.firstName            
-         password: { required: helpers.withMessage("Password is required", required) }, // Matches this.firstName        
+         email: { required: helpers.withMessage("Email is required", required), email: helpers.withMessage("Please enter a valid email address", email) }, // Matches this.firstName
+         password: { required: helpers.withMessage("Password is required", required) }, // Matches this.firstName
       }
    },
    methods: {
@@ -113,6 +113,8 @@ export default {
             }).then((response) => {
                if ('error_message' in response.data) {
                   this.$toast.error("Incorrect Email/Password. Please try again.");
+               } else {
+                  this.$router.push('/default');
                }
             }, (error) => {
                console.log(error);

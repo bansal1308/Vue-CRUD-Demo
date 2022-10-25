@@ -28,8 +28,8 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'fname' => 'required|max:255',
-            'lname' => 'required|max:255',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed'
         ];
@@ -38,10 +38,10 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'fname.required' => 'First Name is required',
-            'fname.max' => 'max 255 characters is allowed',
-            'lname.required' => 'Last Name is required',
-            'lname.max' => 'max 255 characters is allowed',
+            'first_name.required' => 'First Name is required',
+            'first_name.max' => 'max 255 characters is allowed',
+            'last_name.required' => 'Last Name is required',
+            'last_name.max' => 'max 255 characters is allowed',
             'email.required' => 'Email is required',
             'email.email' => 'Please enter a valid email address',
             'password.required' => 'Password is required'

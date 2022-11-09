@@ -80,11 +80,9 @@ export default {
         fullsidebar: {type: Boolean, default: false}
     },
     async created() {
-        console.log(localStorage.getItem('token'));
-
         const response = await axios.get('employee', {
             headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
+                Authorization: 'Bearer ' + this.stateLoginToken
             }
         });
         console.log(response);
@@ -95,25 +93,29 @@ export default {
     },
     computed: {
         ...mapGetters({
-            stateNavbarStyle: 'navbarstyle'
+            stateNavbarStyle: 'navbarstyle',
+            stateLoginUser: 'loginUser',
+            stateLoginToken: 'loginToken'
         })
     },
     methods: {
         ...mapActions({
-            navbarstyleChange: 'navbarstyleAction'
+            navbarstyleChange: 'navbarstyleAction',
+            logoutUserAction: 'logoutUser'
         }),
         opensidebar() {
             this.$emit('makefullsidebar', !this.fullsidebar)
         },
         async logout() {
-            console.log(localStorage.getItem('token'));
+
+            await this.logoutUserAction();
             // const response = await axios.post('logout',{
-            await axios.post("logout").then(response => {
-                console.log(response);
-            })
-                .catch(error => {
-                    console.log(error);
-                });
+            // await axios.post("logout").then(response => {
+            //     console.log(response);
+            // })
+            //     .catch(error => {
+            //         console.log(error);
+            //     });
             //console.log(response);
         }
     }

@@ -42,6 +42,8 @@ export default {
     computed: {
         ...mapGetters({
             stateNavbarStyle: "subnavbarstyle",
+            stateLoginUser: 'loginUser',
+            stateLoginToken: 'loginToken',
         }),
     },
     methods: {

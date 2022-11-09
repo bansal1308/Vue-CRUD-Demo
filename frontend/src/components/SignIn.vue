@@ -106,6 +106,19 @@ export default {
             password: {required: helpers.withMessage("Password is required", required)}, // Matches this.firstName
         }
     },
+    watch:{
+      '$store.stateIsLoginError':{
+          handler:function(){
+              console.log(this.$store.stateIsLoginError)
+          }
+      }
+    },
+    computed: {
+        ...mapGetters({
+            stateIsLoginError: 'isLoginError',
+            stateLoginErrorMessage: 'loginErrorMessage',
+        })
+    },
     methods: {
         ...mapActions({
             loginUserAction: 'loginUser'
@@ -121,33 +134,14 @@ export default {
 
             if (!this.v$.$error) {
 
-                await this.loginUserAction(logindata)
-                console.log('hello')
-                console.log(this.stateIsLoginError)
-                /*await axios({
-                   method: 'post',
-                   url: 'login',
-                   data: logindata
-                }).then((response) => {
-                  console.log(response.data.token);
-                   if ('error_message' in response.data) {
-                      this.$toast.error("Incorrect Email/Password. Please try again.");
-                   } else {
-                      localStorage.setItem('token',response.data.token);
-                      this.$router.push('/default');
-                   }
-                }, (error) => {
-                   console.log(error);
-                   this.$toast.error(error.response.data.errors);
-                });*/
+                await this.loginUserAction(logindata);
+
+                if (this.stateIsLoginError == 'Y') {
+                    this.$toast.error(this.stateLoginErrorMessage);
+                }
+                console.log(this.stateIsLoginError);
             }
         }
-    },
-    computed: {
-        ...mapGetters({
-            stateIsLoginError: 'isLoginError',
-            stateLoginErrorMessage: 'loginErrorMessage',
-        })
     }
 };
 </script>

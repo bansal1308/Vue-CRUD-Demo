@@ -1,6 +1,7 @@
 import {createStore} from 'vuex'
 import axios from "axios";
 import router from '../router'
+import createPersistedState from "vuex-persistedstate";
 //import toast from 'vue-toaster'
 
 export default createStore({
@@ -18,11 +19,14 @@ export default createStore({
             navbarstyle: '',
             subnavbarstyle: ''
         },
-        userLoginSettings: {
+        userLoginData: {
             isLoginError: '',
             loginErrorMessage: '',
+            loginToken: '',
+            loginUser: '',
         }
     },
+    plugins: [createPersistedState()],
     getters: {
         scheme: state => {
             return state.settings.scheme
@@ -64,10 +68,16 @@ export default createStore({
             return state.settings.subnavbarstyle
         },
         isLoginError: state => {
-            return state.userLoginSettings.isLoginError
+            return state.userLoginData.isLoginError
         },
         loginErrorMessage: state => {
-            return state.userLoginSettings.loginErrorMessage
+            return state.userLoginData.loginErrorMessage
+        },
+        loginToken: state => {
+            return state.userLoginData.loginToken
+        },
+        loginUser: state => {
+            return state.userLoginData.loginUser
         }
     },
     mutations: {
@@ -124,25 +134,18 @@ export default createStore({
             state.settings.subnavbarstyle = ''
             sessionStorage.setItem('navbarstyle', state.settings.navbarstyle)
         },
-        loginUserCommit(state, payload) {
-            axios.post("login", {
-                email: payload.email,
-                password: payload.password,
-            }).then(response => {
-                if ('error_message' in response.data) {
-                    state.userLoginSettings.isLoginError = 'Y'
-                    console.log(state.userLoginSettings.isLoginError)
-                    state.userLoginSettings.loginErrorMessage = 'Incorrect Email/Password. Please try again.'
-                    // this.$toast.error("Incorrect Email/Password. Please try again.");
-                } else {
-                    localStorage.setItem('token', response.data.token);
-                    router.push('/default');
-                }
-            }, (error) => {
-                state.userLoginSettings.isLoginError = 'Y'
-                state.userLoginSettings.loginErrorMessage = error.response.data.errors
-                // this.$toast.error(error.response.data.errors);
-            });
+        updateLoginStatusCommit(state, payload) {
+            state.userLoginData.isLoginError = payload.strIsLoginError
+            state.userLoginData.loginErrorMessage = payload.strLoginErrorMessage
+        },
+        setLoginUser(state, payload) {
+            state.userLoginData.loginUser = payload
+            localStorage.setItem('user', payload)
+            //console.log(state.userLoginData.loginUser);
+        },
+        setLoginToken(state, payload) {
+            state.userLoginData.loginToken = payload
+            localStorage.setItem('token', payload)
         }
     },
     actions: {
@@ -177,7 +180,52 @@ export default createStore({
             context.commit('defaultCommit', payload)
         },
         loginUser(context, payload) {
-            context.commit('loginUserCommit', payload)
+            let LoginStatus;
+            return new Promise((resolve, reject) => {
+                axios.post("login", {
+                    email: payload.email,
+                    password: payload.password,
+                }).then(response => {
+                    if ('error_message' in response.data) {
+                        LoginStatus = {'strIsLoginError': 'Y', 'strLoginErrorMessage': 'Incorrect Email/Password. Please try again.'};
+                        context.commit('updateLoginStatusCommit', LoginStatus)
+                        resolve(response);
+                    } else {
+                        LoginStatus = {'strIsLoginError': '', 'strLoginErrorMessage': ''};
+                        context.commit('updateLoginStatusCommit', LoginStatus);
+                        context.commit('setLoginUser', response.data.user);
+                        context.commit('setLoginToken', response.data.token);
+                        router.push('/default');
+                    }
+                }, (error) => {
+                    LoginStatus = {'strIsLoginError': 'Y', 'strLoginErrorMessage': 'Incorrect Email/Password. Please try again.'};
+                    context.commit('updateLoginStatusCommit', LoginStatus)
+                    reject(error);
+                });
+            });
+        },
+        logoutUser(context) {
+            let LoginStatus;
+            let headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json'
+            };
+            let data;
+
+            return new Promise((resolve, reject) => {
+                axios.post("logout",data,{
+                    headers: headers
+                }).then(response => {
+                    LoginStatus = {'strIsLoginError': '', 'strLoginErrorMessage': ''};
+                    context.commit('updateLoginStatusCommit', LoginStatus);
+                    context.commit('setLoginUser', '');
+                    context.commit('setLoginToken', '');
+                    router.push('/signin');
+                }, (error) => {
+                    reject(error);
+                });
+            });
         }
     }
 

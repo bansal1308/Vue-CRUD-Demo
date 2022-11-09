@@ -204,6 +204,17 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes: routes
-  })
+  });
 
-  export default router
+router.beforeEach((to, from) => {
+    const loggedIn = localStorage.getItem('user');
+    const publicPages = ['/signin', '/register'];
+    const authRequired = !publicPages.includes(to.path);
+    console.log(to.name);
+    if (authRequired && !loggedIn) {
+        // next({ name: 'SignIn' })
+        return { name: 'SignIn' }
+    }
+});
+
+export default router;

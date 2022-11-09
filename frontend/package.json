@@ -31,7 +31,9 @@
     "vue3-autocounter": "^1.0.6",
     "vue3-datepicker": "^0.2.5",
     "vuelidate": "^0.7.6",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "vuex-persistedstate": "^4.1.0",
+    "vuex-persister": "^1.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",

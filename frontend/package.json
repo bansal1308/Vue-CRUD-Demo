@@ -23,6 +23,7 @@
     "smooth-scrollbar": "^8.8.1",
     "swiper": "^8.4.4",
     "vanillajs-datepicker": "^1.2.0",
+    "vite-plugin-require": "^1.0.7",
     "vue": "^3.2.37",
     "vue-pnotify": "^1.0.1",
     "vue-router": "^4.1.3",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",
+    "prettier": "2.7.1",
     "sass": "^1.54.3",
     "sass-loader": "^8.0.2",
     "vanillajs-datepicker": "^1.2.0",

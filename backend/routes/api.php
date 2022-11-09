@@ -21,4 +21,8 @@ use App\Http\Controllers\EmployeeController;
 Route::post('/register', [UserAuthController::class, 'register']);
 Route::post('/login', [UserAuthController::class, 'login']);
 
-Route::resource('/employee', EmployeeController::class)->middleware('auth:api');
+Route::apiResource('/employee', 'EmployeeController')->middleware('auth:api');
+Route::middleware('auth:api')->group(function () {
+    // our routes to be protected will go in here
+    Route::post('/logout', [UserAuthController::class, 'logout']);
+});
